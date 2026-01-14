@@ -1,0 +1,49 @@
+import com.mysql.cj.jdbc.Driver;
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args){
+        try{
+            // load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create Connection
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb","root","ankit9520");
+            String query="insert into employees(id,age,first,last) values (?,?,?,?)";
+            PreparedStatement ps= con.prepareStatement(query);
+            Scanner sc=new Scanner(System.in);
+
+            System.out.println("Enetr id");
+            int id= sc.nextInt();
+
+            System.out.println(" Enter your age ");
+            int age=sc.nextInt();
+            sc.nextLine();
+
+            System.out.println("Enter your first name");
+            String first=sc.nextLine();
+
+            System.out.println("Enter your last name");
+            String last=sc.nextLine();
+             ps.setInt(1,id);
+            ps.setInt(2,age);
+            ps.setString(3,first);
+            ps.setString(4,last);
+
+            int row=ps.executeUpdate();
+            if (row>0){
+                System.out.println("Data successfully insert ");
+            }else {
+                System.out.println(" data Insert fail");
+            }
+            ps.close(); // close
+            con.close();
+            sc.close();
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+}
