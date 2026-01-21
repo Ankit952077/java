@@ -9,7 +9,7 @@ public class Main {
             // load Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create Connection
-            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb","root","ankit9520");
+            Connection con= DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb","root","");
             String query="insert into employees(id,age,first,last) values (?,?,?,?)";
             PreparedStatement ps= con.prepareStatement(query);
             Scanner sc=new Scanner(System.in);
