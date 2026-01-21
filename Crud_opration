@@ -1,0 +1,92 @@
+import java.sql.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Scanner for user input
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            // Load MySQL JDBC Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Database connection details
+            String url = "jdbc:mysql://localhost:3306/sms";
+            String user = "root";
+            String password = ""; // 🔐 password hidden for security
+
+            // Establish connection
+            Connection con = DriverManager.getConnection(url, user, password);
+
+            // Menu options
+            System.out.println("1 Update Student Course");
+            System.out.println("2 Delete Student");
+            System.out.println("3 Exit");
+
+            int choice = sc.nextInt();
+
+            // UPDATE operation
+            if (choice == 1) {
+
+                String query = "UPDATE student SET course=? WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(query);
+
+                System.out.println("Enter student id:");
+                int id = sc.nextInt();
+                sc.nextLine(); // consume newline
+
+                System.out.println("Enter new course:");
+                String course = sc.nextLine();
+
+                // Setting values according to query placeholder order
+                ps.setString(1, course);
+                ps.setInt(2, id);
+
+                int row = ps.executeUpdate();
+
+                if (row > 0) {
+                    System.out.println("Student data updated successfully");
+                } else {
+                    System.out.println("No student found with given id");
+                }
+
+                ps.close();
+
+            }
+            // DELETE operation
+            else if (choice == 2) {
+
+                String query = "DELETE FROM student WHERE id=?";
+                PreparedStatement ps = con.prepareStatement(query);
+
+                System.out.println("Enter student id to delete:");
+                int id = sc.nextInt();
+
+                ps.setInt(1, id);
+
+                int row = ps.executeUpdate();
+
+                if (row > 0) {
+                    System.out.println("Student deleted successfully");
+                } else {
+                    System.out.println("Student not found");
+                }
+
+                ps.close();
+
+            }
+            // EXIT
+            else if (choice == 3) {
+                System.out.println("Program exited");
+            }
+
+            // Close resources
+            con.close();
+            sc.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
